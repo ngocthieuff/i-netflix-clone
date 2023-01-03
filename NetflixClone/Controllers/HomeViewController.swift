@@ -25,6 +25,8 @@ class HomeViewController: UIViewController {
     // after being added, this view appears on top of any other subviews
     view.addSubview(homeFeedTable)
     
+    configureNavbar()
+    
     // delegate: control of the user interface
     // datasource: delegated control of data
     homeFeedTable.delegate = self
@@ -34,10 +36,31 @@ class HomeViewController: UIViewController {
     homeFeedTable.tableHeaderView = headerView
   }
   
+  private func configureNavbar() {
+      let image = UIImage(named: "netflixLogo")
+      
+      let resizedImage = image?.resized(to: CGSize(width: 50, height: 50))
+
+      navigationItem.leftBarButtonItem = UIBarButtonItem(image: resizedImage)
+        
+      navigationItem.rightBarButtonItems = [
+        UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
+        UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
+      ]
+  }
+  
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     homeFeedTable.frame = view.bounds
   }
+}
+
+extension UIImage {
+    func resized(to size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
